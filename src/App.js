@@ -1,13 +1,25 @@
-import LOGO from "./ascets/memories.png";
+import { useEffect } from "react";
 
+// imports from outside
 import { Container, AppBar, Typography, Grid, Grow } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+
+// imports from our app
 import Form from "./Forms/Form";
 import Post from "./Posts/Posts";
+import { getPosts } from "./actions/posts";
 
 import useStyle from "./styles";
+import LOGO from "./ascets/memories.png";
 
 function App() {
   const classes = useStyle();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
+
   return (
     <Container maxwidth="lg">
       <AppBar className={classes.appBar} position="static" color="inherit">
