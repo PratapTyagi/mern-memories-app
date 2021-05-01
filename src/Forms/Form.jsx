@@ -1,12 +1,15 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createPosts } from "../actions/posts";
+import React from "react";
+import FileBase64 from "react-file-base64";
+
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createPosts, updatePost } from "../actions/posts";
 
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 
 import useStyles from "./styles";
 
-const Form = () => {
+const Form = ({ currentId, setcurrentId }) => {
   const classes = useStyles();
 
   const [postData, setPostData] = useState({
@@ -17,13 +20,30 @@ const Form = () => {
     selectedFile: "",
   });
   const dispatch = useDispatch();
+  const post = useSelector((state) =>
+    currentId ? state.posts.find((post) => post._id === currentId) : null
+  );
+
+  useEffect(() => {
+    if (post) setPostData(post);
+  }, [post]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPosts(postData));
+
+    if (currentId) dispatch(updatePost(currentId, postData));
+    else dispatch(createPosts(postData));
   };
 
-  const clear = () => {};
+  const clear = () => {
+    setPostData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
+  };
 
   return (
     <Paper className={`${classes.paper} ${classes.root}`}>
@@ -72,10 +92,11 @@ const Form = () => {
         />
 
         <div className={classes.fileInput}>
-          <input
+          <FileBase64
             type="file"
-            onChange={(e) =>
-              setPostData({ ...postData, selectedFile: e.target.value })
+            multiple={false}
+            onDone={({ base64 }) =>
+              setPostData({ ...postData, selectedFile: base64 })
             }
           />
         </div>
