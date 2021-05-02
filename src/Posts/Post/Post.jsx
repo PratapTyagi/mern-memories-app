@@ -25,10 +25,10 @@ const Post = ({ post, setcurrentId }) => {
       <div className={classes.overlay}>
         <Typography varient="h6">{post.creator}</Typography>
         <Typography varient="body2">
-          {moment(post.created).fromNow()}
+          {moment(post.createdAt).fromNow()}
         </Typography>
       </div>
-      <div className={classes.overlay}>
+      <div className={classes.overlay2}>
         <Button
           style={{ color: "white" }}
           size="small"
@@ -39,11 +39,14 @@ const Post = ({ post, setcurrentId }) => {
       </div>
       <div className={classes.details}>
         <Typography varient="body2" color="secondary">
-          #
+          {post.tags.map((t) => `#${t} `)}
         </Typography>
       </div>
+      <Typography className={classes.title} varient="h5" gutterBottom>
+        {post.title}
+      </Typography>
       <CardContent>
-        <Typography className={classes.title} varient="h5" gutterBottom>
+        <Typography varient="h5" gutterBottom>
           {post.message}
         </Typography>
       </CardContent>

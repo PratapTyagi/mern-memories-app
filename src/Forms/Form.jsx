@@ -28,11 +28,12 @@ const Form = ({ currentId, setcurrentId }) => {
     if (post) setPostData(post);
   }, [post]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (currentId) dispatch(updatePost(currentId, postData));
+    if (currentId !== 0) dispatch(updatePost(currentId, postData));
     else dispatch(createPosts(postData));
+    clear();
   };
 
   const clear = () => {
@@ -43,6 +44,7 @@ const Form = ({ currentId, setcurrentId }) => {
       tags: "",
       selectedFile: "",
     });
+    setcurrentId(0);
   };
 
   return (
@@ -53,7 +55,9 @@ const Form = ({ currentId, setcurrentId }) => {
         noValidate
         onSubmit={handleSubmit}
       >
-        <Typography varient="h5">Creating a memory</Typography>
+        <Typography varient="h5">
+          {currentId ? "Updating" : "Creating"} a memory
+        </Typography>
         <TextField
           name="creator"
           variant="outlined"
