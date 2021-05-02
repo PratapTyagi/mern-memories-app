@@ -36,6 +36,16 @@ export const deletePost = (id) => async (dispatch) => {
     const action = await { type: "DELETE", payload: id };
     dispatch(action);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
+  }
+};
+
+export const likePost = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.likePost(id);
+    const action = await { type: "LIKE-COUNT", payload: data };
+    dispatch(action);
+  } catch (error) {
+    console.log(error.message);
   }
 };
